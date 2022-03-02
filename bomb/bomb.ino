@@ -32,7 +32,7 @@ void alternarmodos() {
 
          while(digitalRead(ARM_BTN)==HIGH){
    
-    digitalWrite(25, HIGH);
+    digitalWrite(LED_COUNT, HIGH);
     if (digitalRead(UP_BTN)==LOW)
     {
        display.setTextAlignment(TEXT_ALIGN_LEFT);
@@ -82,9 +82,14 @@ void alternarmodos() {
   uint32_t timeNew;
 
   timeNew = millis();
+
+
   if ( (timeNew - timeOld ) > 1000 ) {
     timeOld = timeNew;
     if (counter == 0){ 
+      digitalWrite(BOMB_OUT, HIGH);
+      delay(200);
+      digitalWrite(BOMB_OUT, LOW);
     resetSoftware();
     }
     else counter = counter - 1;
@@ -93,6 +98,7 @@ void alternarmodos() {
     display.setTextAlignment(TEXT_ALIGN_LEFT);
     display.clear();
     display.drawString(20, 16, String(counter));
+
   }
 
   Serial.println(millis());
