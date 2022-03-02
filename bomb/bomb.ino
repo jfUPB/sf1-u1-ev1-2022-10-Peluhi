@@ -7,12 +7,16 @@
 #define ARM_BTN 33
 SSD1306Wire display(0x3c, SDA, SCL, GEOMETRY_128_32);
 
+void(* resetSoftware)(void) = 0;
+
 void setup() {
   Serial.begin(115200);
-  pinMode(25, OUTPUT);
-  pinMode(13,INPUT_PULLUP);
-  pinMode(32,INPUT_PULLUP);
-  pinMode(33,INPUT_PULLUP);
+  pinMode(BOMB_OUT, OUTPUT);
+  pinMode(UP_BTN,INPUT_PULLUP);
+  pinMode(DOWN_BTN,INPUT_PULLUP);
+  pinMode(ARM_BTN,INPUT_PULLUP);
+  display.init();
+  display.setContrast(255);
 
 }
 
@@ -58,7 +62,31 @@ void alternarmodos() {
          break;
       }
     case DebounceStates::BOMBA: {
-       
+
+  static uint8_t envio=tiempo;
+  static uint8_t counter = envio;
+  static uint32_t timeOld = 0;
+  uint32_t timeNew;
+
+  timeNew = millis();
+  if ( (timeNew - timeOld ) > 1000 ) {
+    timeOld = timeNew;
+    if (counter == 0){ 
+    resetSoftware();
+    }
+    else counter = counter - 1;
+
+    display.setFont(ArialMT_Plain_10);
+    display.setTextAlignment(TEXT_ALIGN_LEFT);
+    display.clear();
+    display.drawString(20, 16, String(counter));
+  }
+
+  Serial.println(millis());
+  Serial.println("drawing");
+ 
+  display.display();
+  Serial.println(millis());
 
         break;
       }
