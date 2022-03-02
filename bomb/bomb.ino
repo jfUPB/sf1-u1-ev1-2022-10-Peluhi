@@ -35,6 +35,12 @@ void alternarmodos() {
     digitalWrite(25, HIGH);
     if (digitalRead(UP_BTN)==LOW)
     {
+       display.setTextAlignment(TEXT_ALIGN_LEFT);
+        display.setFont(ArialMT_Plain_16);
+        display.clear();
+        //0.66: 10,20 otros 0,5
+        display.drawString(0, 5, String(tiempo));  
+        display.display();
       tiempo=tiempo+1;
       if (tiempo>=60){
       tiempo=20;}
@@ -42,11 +48,17 @@ void alternarmodos() {
       Serial.println("Tiempo:");
       Serial.println(tiempo);
       Serial.print('\n');
-          
+      
     }
     
      if (digitalRead(DOWN_BTN)==LOW)
     {
+      display.setTextAlignment(TEXT_ALIGN_LEFT);
+        display.setFont(ArialMT_Plain_16);
+        display.clear();
+        //0.66: 10,20 otros 0,5
+        display.drawString(0, 5, String(tiempo));  
+        display.display();
       tiempo=tiempo-1;
       if (tiempo<=10){
       tiempo=20;}
@@ -54,6 +66,7 @@ void alternarmodos() {
       Serial.println("Tiempo:");
       Serial.println(tiempo);
       Serial.print('\n');
+      
       
     }
        modoactual = DebounceStates::BOMBA;
